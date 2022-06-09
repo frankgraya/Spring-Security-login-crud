@@ -1,4 +1,4 @@
-package com.example.Spring_boot_login_crud;
+package com.example.Spring_boot_login_crud.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
