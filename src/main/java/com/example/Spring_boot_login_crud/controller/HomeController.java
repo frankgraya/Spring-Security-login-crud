@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class HomeController {
 
     //    @Secured("ADMIN")
-    @GetMapping("/")
+    @GetMapping({"/index","/home","/"})
     public String index(Model model) {
         log.info("estas en el home controller");
         return "home";
