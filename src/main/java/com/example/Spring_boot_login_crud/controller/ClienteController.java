@@ -6,6 +6,7 @@ import com.example.Spring_boot_login_crud.models.Cliente;
 import com.example.Spring_boot_login_crud.service.ICiudadService;
 import com.example.Spring_boot_login_crud.service.IClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -18,13 +19,14 @@ import java.util.List;
 @RequestMapping("/views/clientes")
 public class ClienteController {
 
-
     @Autowired
     private IClienteService clienteService;
 
     @Autowired
     private ICiudadService ciudadService;
 
+
+    @Secured("ROLE_USER")
     @GetMapping("/")
     public String listarClientes(Model model) {
         List<Cliente> listadoClientes = clienteService.listarTodos();
@@ -35,6 +37,7 @@ public class ClienteController {
         return "/views/clientes/listar";
     }
 
+    @Secured("ROLE_ADMIN")
     @GetMapping("/create")
     public String crear(Model model) {
 
@@ -48,8 +51,9 @@ public class ClienteController {
         return "/views/clientes/frmCrear";
     }
 
+    @Secured({"ROLE_ADMIN", "ROLE_USER"})
     @PostMapping("/save")
-    public String guardar(@ModelAttribute Cliente cliente, BindingResult result,
+    public String guardar( @ModelAttribute Cliente cliente, BindingResult result,
                           Model model, RedirectAttributes attribute) {
         List<Ciudad> listCiudades = ciudadService.listaCiudades();
 
@@ -67,6 +71,7 @@ public class ClienteController {
         return "redirect:/views/clientes/";
     }
 
+    @Secured({"ROLE_ADMIN", "ROLE_USER"})
     @GetMapping("/edit/{id}")
     public String editar(@PathVariable("id") Long idCliente, Model model, RedirectAttributes attribute) {
 
@@ -95,11 +100,15 @@ public class ClienteController {
         return "/views/clientes/frmCrear";
     }
 
+    @Secured("ROLE_ADMIN")
     @GetMapping("/delete/{id}")
     public String eliminar(@PathVariable("id") Long idCliente, RedirectAttributes attribute) {
+
         Cliente cliente = null;
+
         if (idCliente > 0) {
             cliente = clienteService.buscarPorId(idCliente);
+
             if (cliente == null) {
                 System.out.println("Error: El ID del cliente no existe!");
                 attribute.addFlashAttribute("error", "ATENCION: El ID del cliente no existe!");
@@ -110,9 +119,11 @@ public class ClienteController {
             attribute.addFlashAttribute("error", "ATENCION: Error con el ID del Cliente!");
             return "redirect:/views/clientes/";
         }
+
         clienteService.eliminar(idCliente);
         System.out.println("Registro Eliminado con Exito!");
         attribute.addFlashAttribute("warning", "Registro Eliminado con Exito!");
+
         return "redirect:/views/clientes/";
     }
 }
