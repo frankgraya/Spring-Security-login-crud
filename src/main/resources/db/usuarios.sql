@@ -1,5 +1,3 @@
-
-
 DROP TABLE IF EXISTS `ciudades`;
 
 CREATE TABLE `ciudades` (
@@ -10,7 +8,6 @@ CREATE TABLE `ciudades` (
 
 
 INSERT INTO `ciudades` VALUES (1,'San Salvador'),(2,'San José'),(3,'Managua'),(4,'Los Ángeles'),(5,'San Francisco');
-
 
 
 DROP TABLE IF EXISTS `clientes`;
@@ -35,21 +32,6 @@ INSERT INTO `clientes` VALUES (1,'Diana','Lima','7458-2356','diana@gmail.com',1)
 
 
 
-
-DROP TABLE IF EXISTS `roles`;
-
-CREATE TABLE `roles` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `user_id` int(11) NOT NULL,
-  `rol` varchar(45) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `user_id_rol_unique` (`user_id`,`rol`) /*!80000 INVISIBLE */,
-  CONSTRAINT `fk_rol_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-)
-INSERT INTO `roles` VALUES (1,1,'ROLE_USER'),(2,2,'ROLE_USER'),(3,2,'ROLE_ADMIN');
-
-
-
 DROP TABLE IF EXISTS `users`;
 
 CREATE TABLE `users` (
@@ -63,5 +45,15 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` VALUES (1,'user','$2a$10$WcfCTc80pJquE5KonjuF..67hNx02CiHhkpZWRHRXYza.EF.yabjS',1),(2,'admin','$2a$10$0XjVZkDpnnnlhQjnXPgD0uWrTjp7pi6Qp5NuiURQebJaN7Pl72sra',1);
 
+DROP TABLE IF EXISTS `roles`;
 
--- Dump completed on 2019-10-26 10:21:41
+CREATE TABLE `roles` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `rol` varchar(45) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `user_id_rol_unique` (`user_id`,`rol`) /*!80000 INVISIBLE */,
+  CONSTRAINT `fk_rol_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+)
+INSERT INTO `roles` VALUES (1,1,'ROLE_USER'),(2,2,'ROLE_USER'),(3,2,'ROLE_ADMIN');
+
